@@ -72,12 +72,27 @@ namespace symd
         >::type type;
     };
     
-    template <typename list_t, typename accum_t> var_list_unique_helper
+    template <typename list_t, const symbol_t var_id> struct var_list_contains
     {
-        typedef int type;
+        const static bool value = false;
     };
     
-    template var_list_unique_helper<no_var_t>
+    template <typename list_t, typename accum_t> struct var_list_unique_helper
+    {
+        typedef typename std::conditional
+        <
+            list_t::size()==0,
+            accum_t,
+            typename std::conditional
+            <
+                var_list_contains<list_t,list_t::val()>::value,
+                true_t,
+                false_t
+            >::type
+        >::type type;
+    };
+    
+    template <typename accum_t> struct var_list_unique_helper<no_var_t, accum_t>
     {
         typedef no_var_t type;
     };
@@ -86,6 +101,7 @@ namespace symd
     {
         typedef typename var_list_unique_helper<list_t, no_var_t>::type type;
     };
+    
     template <typename lhs_t, typename rhs_t> struct var_list_union
     {
         typedef typename var_list_concat<lhs_t, rhs_t>::type type;
