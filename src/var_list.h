@@ -8,11 +8,13 @@ namespace symd
 {    
     struct no_var_t
     {
-        static std::size_t size(void) {return 0;}
+        constexpr static std::size_t size(void) {return 0;}
     };
-    template <const symbol_t val, typename next_t> struct var_list_t
+    template <const symbol_t elem, typename next_t> struct var_list_t
     {
-        static std::size_t size(void) {return 1+next_t::size();};
+        constexpr static std::size_t size(void) {return 1+next_t::size();};
+        constexpr static symbol_t val(void) {return elem;}
+        typedef next_t next_type;
     };
     template <const symbol_t... vals> struct varlist_dummy;
     template <const symbol_t val, const symbol_t... vals> struct varlist_dummy<val, vals...>;
@@ -28,8 +30,64 @@ namespace symd
     {
         typedef var_list_t<val, typename make_var_list_t<vals...>::type> type;
     };
+    template <typename lhs_t, typename rhs_t> struct var_list_concat_helper
+    {
+        typedef var_list_t
+        <
+            lhs_t::val(),
+            typename std::conditional
+            <
+                lhs_t::next_type::size()==0,
+                rhs_t,
+                typename var_list_concat_helper
+                <
+                    typename lhs_t::next_type,
+                    rhs_t
+                >::type
+            >::type
+        > type;
+    };
+    
+    template <typename rhs_t> struct var_list_concat_helper<no_var_t, rhs_t>
+    {
+        typedef rhs_t type;
+    };
+    template <typename lhs_t> struct var_list_concat_helper<lhs_t, no_var_t>
+    {
+        typedef lhs_t type;
+    };
+    
+    template <typename lhs_t, typename rhs_t> struct var_list_concat
+    {
+        typedef typename std::conditional
+        <
+            lhs_t::size()==0,
+            rhs_t,
+            typename std::conditional
+            <
+                rhs_t::size()==0,
+                lhs_t,
+                typename var_list_concat_helper<lhs_t,rhs_t>::type
+            >::type
+        >::type type;
+    };
+    
+    template <typename list_t, typename accum_t> var_list_unique_helper
+    {
+        typedef int type;
+    };
+    
+    template var_list_unique_helper<no_var_t>
+    {
+        typedef no_var_t type;
+    };
+    
+    template <typename list_t> struct var_list_unique
+    {
+        typedef typename var_list_unique_helper<list_t, no_var_t>::type type;
+    };
     template <typename lhs_t, typename rhs_t> struct var_list_union
     {
-        typedef int type;//begin here!
+        typedef typename var_list_concat<lhs_t, rhs_t>::type type;
     };
 }
