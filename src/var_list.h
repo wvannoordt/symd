@@ -74,6 +74,11 @@ namespace symd
     
     template <typename list_t, const symbol_t var_id> struct var_list_contains
     {
+        const static bool value = var_id==list_t::val() || var_list_contains<typename list_t::next_type, var_id>::value;
+    };
+    
+    template <const symbol_t var_id> struct var_list_contains<no_var_t, var_id>
+    {
         const static bool value = false;
     };
     
@@ -87,22 +92,14 @@ namespace symd
             <
                 var_list_contains<accum_t,list_t::val()>::value,
                 typename var_list_unique_helper<typename list_t::next_type, accum_t>::type,
-                typename var_list_unique_helper
-                <
-                    typename list_t::next_type,
-                    var_list_t
-                    <
-                        list_t::val(),
-                        accum_t
-                    >
-                >::type
+                typename var_list_unique_helper<typename list_t::next_type, var_list_t<list_t::val(),accum_t>>::type
             >::type
         >::type type;
     };
     
     template <typename accum_t> struct var_list_unique_helper<no_var_t, accum_t>
     {
-        typedef no_var_t type;
+        typedef accum_t type;
     };
     
     template <typename list_t> struct var_list_unique
@@ -112,6 +109,6 @@ namespace symd
     
     template <typename lhs_t, typename rhs_t> struct var_list_union
     {
-        typedef typename var_list_concat<lhs_t, rhs_t>::type type;
+        typedef typename var_list_unique<typename var_list_concat<lhs_t, rhs_t>::type>::type type;
     };
 }

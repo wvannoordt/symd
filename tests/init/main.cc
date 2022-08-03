@@ -1,21 +1,20 @@
+#include <concepts>
 #include <print.h>
 #include "symd.h"
 
 int main(int argc, char** argv)
 {
-    enum syms2 {x, y, z};
+    enum syms2 {x, y, z, p, q};
     
     symd::var_t<x> x_v;
     symd::var_t<y> y_v;
     symd::var_t<z> z_v;
+    symd::var_t<p> p_v;
+    symd::var_t<q> q_v;
     
-    auto func   = x_v*y_v;
-    
-    auto vl = symd::make_var_list_t<x, y>::type();
-    auto vr = symd::make_var_list_t<x, y, z>::type();
-    auto vu = symd::var_list_union<symd::make_var_list_t<x, y>::type, symd::make_var_list_t<x, y, x, x, x, x, z>::type>::type();
-    auto vq = symd::var_list_unique<symd::make_var_list_t<x, y, x, y, x, y, z, y, x>::type>::type();
-    print(vq.size());
+    auto f0   = x_v*y_v;
+    auto f1   = f0 + x_v*z_v;
+    // auto f_x = symd::ddx<x_v>();
     
     // auto val1   = func(x_v=1.0, y_v=2.0);
     // auto vec1_v = symd::vector(x_v, y_v);

@@ -12,6 +12,11 @@ namespace symd
     
     template <typename lhs_t, const binary_operation bin_op, typename rhs_t> struct binary_operation_t
     {
-        // typedef typename varset_union_t<typename lhs_t::variable_type, typename rhs_t::variable_type>::type variable_type;
+        
+    };
+    
+    template <typename lhs_t, typename rhs_t> struct binary_operation_t<lhs_t, op_sum, rhs_t>
+    {
+        using deriv_t = lhs_t;
     };
 }
