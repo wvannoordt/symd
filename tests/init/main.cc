@@ -14,8 +14,8 @@ int main(int argc, char** argv)
     auto vl = symd::make_var_list_t<x, y>::type();
     auto vr = symd::make_var_list_t<x, y, z>::type();
     auto vu = symd::var_list_union<symd::make_var_list_t<x, y>::type, symd::make_var_list_t<x, y, x, x, x, x, z>::type>::type();
-    
-    print(vu.size());
+    auto vq = symd::var_list_unique<symd::make_var_list_t<x, y, x, y, x, y, z, y, x>::type>::type();
+    print(vq.size());
     
     // auto val1   = func(x_v=1.0, y_v=2.0);
     // auto vec1_v = symd::vector(x_v, y_v);

@@ -85,9 +85,17 @@ namespace symd
             accum_t,
             typename std::conditional
             <
-                var_list_contains<list_t,list_t::val()>::value,
-                true_t,
-                false_t
+                var_list_contains<accum_t,list_t::val()>::value,
+                typename var_list_unique_helper<typename list_t::next_type, accum_t>::type,
+                typename var_list_unique_helper
+                <
+                    typename list_t::next_type,
+                    var_list_t
+                    <
+                        list_t::val(),
+                        accum_t
+                    >
+                >::type
             >::type
         >::type type;
     };
