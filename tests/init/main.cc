@@ -4,16 +4,15 @@
 
 int main(int argc, char** argv)
 {
-    enum syms2 {x, y, z, p, q};
+    enum syms2 {x, y, z, w};
     
     symd::var_t<x> x_v;
     symd::var_t<y> y_v;
     symd::var_t<z> z_v;
-    symd::var_t<p> p_v;
-    symd::var_t<q> q_v;
+    symd::var_t<w> w_v;
     
     auto f0   = x_v*y_v;
-    auto f1   = f0 + x_v*z_v;
+    auto f1   = (x_v*z_v + f0)*w_v;
     // auto f_x = symd::ddx<x_v>();
     
     // auto val1   = func(x_v=1.0, y_v=2.0);
