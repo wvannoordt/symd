@@ -1,11 +1,17 @@
 #pragma once
 
 #include <type_traits>
+#include <concepts>
 
 #include "sym_type.h"
 
 namespace symd
-{    
+{
+    template <typename T> concept variate_expression = requires(T t)
+    {
+        T::variable_t::size();
+    };
+    
     struct no_var_t
     {
         constexpr static std::size_t size(void) {return 0;}
