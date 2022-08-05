@@ -1,6 +1,7 @@
 #pragma once
 
 #include "var_list.h"
+#include "bin_ops.h"
 
 namespace symd
 {
@@ -8,14 +9,23 @@ namespace symd
     {
         typedef typename make_var_list_t<var_id>::type variable_t;
         
-        template <typename rhs_t> auto operator* (const rhs_t& rhs)
+        template <variate_expression rhs_t> auto operator+ (const rhs_t& rhs)
+        {
+            return binary_operation_t<var_t<var_id>, rhs_t, op_sum>(*this, rhs);
+        }
+        template <variate_expression rhs_t> auto operator- (const rhs_t& rhs)
+        {
+            return binary_operation_t<var_t<var_id>, rhs_t, op_difference>(*this, rhs);
+        }
+        template <variate_expression rhs_t> auto operator* (const rhs_t& rhs)
         {
             return binary_operation_t<var_t<var_id>, rhs_t, op_product>(*this, rhs);
         }
-        
-        template <typename data_t> auto operator()(const data_t& data)
+        template <variate_expression rhs_t> auto operator/ (const rhs_t& rhs)
         {
-            return data;
+            return binary_operation_t<var_t<var_id>, rhs_t, op_quotient>(*this, rhs);
         }
     };
+    
+    // template <typename lhs_t>//hers
 }

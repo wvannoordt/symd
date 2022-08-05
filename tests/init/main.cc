@@ -11,12 +11,18 @@ int main(int argc, char** argv)
     symd::var_t<z> z_v;
     symd::var_t<w> w_v;
     
-    auto f0 = x_v*y_v;
+    auto f0 = x_v+y_v;
     auto h0 = f0 + w_v;
     auto f1 = 13*((x_v*z_v + f0)*w_v + 5);
     auto f2 = f1*h0;
+    auto f3 = symd::exp(f0) + x_v;
+    auto f4 = 1 + symd::exp(f0) + 15*y_v+f2;
+    // ++f3;
+    // auto f_x = symd::ddx<x_v>()
     
-    // auto f_x = symd::ddx<x_v>();
+    //another idea: partial evaluation:
+    // auto h1 = x_v + y_v*y_v;
+    // auto h2 = h1(y_v=2.0); -> equivalent to x_v + 4.0
     
     // auto val1   = func(x_v=1.0, y_v=2.0);
     // auto vec1_v = symd::vector(x_v, y_v);
