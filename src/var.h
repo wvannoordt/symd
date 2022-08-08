@@ -27,5 +27,51 @@ namespace symd
         }
     };
     
-    // template <typename lhs_t>//hers
+    template <variate_expression lhs_t, const std::size_t var_id> auto operator +(const lhs_t& lhs, const var_t<var_id>& rhs)
+    {
+        return binary_operation_t<lhs_t, var_t<var_id>, op_sum>(lhs, rhs);
+    }
+    
+    template <variate_expression lhs_t, const std::size_t var_id> auto operator -(const lhs_t& lhs, const var_t<var_id>& rhs)
+    {
+        return binary_operation_t<lhs_t, var_t<var_id>, op_difference>(lhs, rhs);
+    }
+    
+    template <variate_expression lhs_t, const std::size_t var_id> auto operator *(const lhs_t& lhs, const var_t<var_id>& rhs)
+    {
+        return binary_operation_t<lhs_t, var_t<var_id>, op_product>(lhs, rhs);
+    }
+    
+    template <variate_expression lhs_t, const std::size_t var_id> auto operator /(const lhs_t& lhs, const var_t<var_id>& rhs)
+    {
+        return binary_operation_t<lhs_t, var_t<var_id>, op_quotient>(lhs, rhs);
+    }
+    
+    template <typename lhs_t, const std::size_t var_id>
+    requires (!variate_expression<lhs_t>)
+    auto operator +(const lhs_t& lhs, const var_t<var_id>& rhs)
+    {
+        return binary_operation_t<constant_t<lhs_t>, var_t<var_id>, op_sum>(constant_t<lhs_t>(lhs), rhs);
+    }
+    
+    template <typename lhs_t, const std::size_t var_id>
+    requires (!variate_expression<lhs_t>)
+    auto operator -(const lhs_t& lhs, const var_t<var_id>& rhs)
+    {
+        return binary_operation_t<constant_t<lhs_t>, var_t<var_id>, op_difference>(constant_t<lhs_t>(lhs), rhs);
+    }
+    
+    template <typename lhs_t, const std::size_t var_id>
+    requires (!variate_expression<lhs_t>)
+    auto operator *(const lhs_t& lhs, const var_t<var_id>& rhs)
+    {
+        return binary_operation_t<constant_t<lhs_t>, var_t<var_id>, op_product>(constant_t<lhs_t>(lhs), rhs);
+    }
+    
+    template <typename lhs_t, const std::size_t var_id>
+    requires (!variate_expression<lhs_t>)
+    auto operator /(const lhs_t& lhs, const var_t<var_id>& rhs)
+    {
+        return binary_operation_t<constant_t<lhs_t>, var_t<var_id>, op_quotient>(constant_t<lhs_t>(lhs), rhs);
+    }
 }
