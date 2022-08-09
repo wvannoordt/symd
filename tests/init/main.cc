@@ -17,6 +17,9 @@ int main(int argc, char** argv)
     auto f3 = symd::exp(f0) + x_v;
     auto f4 = 1 + symd::exp(f0) + 15*y_v+f2;
     
+    auto vec = symd::vector(x_v, y_v);
+    print(symd::sym_vector_type<decltype(vec)>);
+    
     // auto val = f0(x_v=1.0, y_v=2.0);
     // ++f4;
     // ++f3;
