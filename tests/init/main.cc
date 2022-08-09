@@ -17,7 +17,6 @@ int main(int argc, char** argv)
     auto f2 = f1*h0;
     auto f3 = symd::exp(f0) + x_v;
     auto f4 = 1 + symd::exp(f0) + 15*y_v+f2;
-    // ++f3;
     // auto f_x = symd::ddx<x_v>()
     
     //another idea: partial evaluation:

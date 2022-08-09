@@ -1,6 +1,9 @@
 #pragma once
+
 #include "var_list.h"
 #include "constant.h"
+#include "forward_expression.h"
+
 namespace symd
 {
     enum binary_operation
@@ -27,53 +30,32 @@ namespace symd
             rhs = rhs_in;
         }
         
-        template <variate_expression rhs_exp_t>
+        template <typename rhs_exp_t>
         constexpr auto operator +(const rhs_exp_t& rhs_exp)
         {
-            return binary_operation_t<binary_operation_t, rhs_exp_t, op_sum>(*this, rhs_exp);
+            typedef typename forward_expression_t<rhs_exp_t>::type base_t;
+            return binary_operation_t<binary_operation_t, base_t, op_sum>(*this, forward_expression(rhs_exp));
         }
         
-        template <variate_expression rhs_exp_t>
+        template <typename rhs_exp_t>
         constexpr auto operator -(const rhs_exp_t& rhs_exp)
         {
-            return binary_operation_t<binary_operation_t, rhs_exp_t, op_difference>(*this, rhs_exp);
+            typedef typename forward_expression_t<rhs_exp_t>::type base_t;
+            return binary_operation_t<binary_operation_t, base_t, op_difference>(*this, forward_expression(rhs_exp));
         }
         
-        template <variate_expression rhs_exp_t>
+        template <typename rhs_exp_t>
         constexpr auto operator *(const rhs_exp_t& rhs_exp)
         {
-            return binary_operation_t<binary_operation_t, rhs_exp_t, op_product>(*this, rhs_exp);
+            typedef typename forward_expression_t<rhs_exp_t>::type base_t;
+            return binary_operation_t<binary_operation_t, base_t, op_product>(*this, forward_expression(rhs_exp));
         }
         
-        template <variate_expression rhs_exp_t>
+        template <typename rhs_exp_t>
         constexpr auto operator /(const rhs_exp_t& rhs_exp)
         {
-            return binary_operation_t<binary_operation_t, rhs_exp_t, op_quotient>(*this, rhs_exp);
-        }
-        
-        //pod operands
-        template <typename rhs_exp_t> requires (!variate_expression<rhs_exp_t>)
-        constexpr auto operator +(const rhs_exp_t& rhs_exp)
-        {
-            return binary_operation_t<binary_operation_t, constant_t<rhs_exp_t>, op_sum>(*this, constant_t<rhs_exp_t>(rhs_exp));
-        }
-        
-        template <typename rhs_exp_t> requires (!variate_expression<rhs_exp_t>)
-        constexpr auto operator -(const rhs_exp_t& rhs_exp)
-        {
-            return binary_operation_t<binary_operation_t, constant_t<rhs_exp_t>, op_difference>(*this, constant_t<rhs_exp_t>(rhs_exp));
-        }
-        
-        template <typename rhs_exp_t> requires (!variate_expression<rhs_exp_t>)
-        constexpr auto operator *(const rhs_exp_t& rhs_exp)
-        {
-            return binary_operation_t<binary_operation_t, constant_t<rhs_exp_t>, op_product>(*this, constant_t<rhs_exp_t>(rhs_exp));
-        }
-        
-        template <typename rhs_exp_t> requires (!variate_expression<rhs_exp_t>)
-        constexpr auto operator /(const rhs_exp_t& rhs_exp)
-        {
-            return binary_operation_t<binary_operation_t, constant_t<rhs_exp_t>, op_quotient>(*this, constant_t<rhs_exp_t>(rhs_exp));
+            typedef typename forward_expression_t<rhs_exp_t>::type base_t;
+            return binary_operation_t<binary_operation_t, base_t, op_quotient>(*this, forward_expression(rhs_exp));
         }
     };
     
