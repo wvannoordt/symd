@@ -13,10 +13,10 @@ namespace symd
         t.val;
     };
     
-    template <typename T> concept basic_symbol_vector_type = sym_vector_type<T> && requires(T t)
-    {
-        
-    }
+    // template <typename T> concept basic_symbol_vector_type = sym_vector_type<T> && requires(T t)
+    // {
+    // 
+    // };
     
     template <typename val_t, typename next_t> struct vector_t
     {

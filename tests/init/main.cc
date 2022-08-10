@@ -17,8 +17,24 @@ int main(int argc, char** argv)
     auto f3 = symd::exp(f0) + x_v;
     auto f4 = 1 + symd::exp(f0) + 15*y_v+f2;
     
-    auto vec = symd::vector(x_v, y_v);
-    print(symd::sym_vector_type<decltype(vec)>);
+    auto vec1 = symd::vector(x_v, y_v, z_v); // -> unique, variable-only vector
+    auto vec2 = symd::vector(x_v, y_v, z_v*y_v); // -> unique, non variable-only vector
+    auto vec3 = symd::vector(x_v, y_v, z_v*y_v, x_v); // -> non unique, non variable-only vector
+    auto vec4 = symd::vector(x_v, y_v, x_v); // -> non unique, variable-only vector
+    
+    //idea: the vector function retues a pure unique variable-only vector when it can
+    //otherwise, it returns a basic vector type. Therefore, only vec1 is a valid vector
+    //to differentiate against. We should also be able to build a symbolic vector from a
+    //var_list
+    
+    print(symd::sym_vector_type<decltype(vec1)>);
+    print(symd::sym_vector_type<decltype(vec2)>);
+    print(symd::sym_vector_type<decltype(vec3)>);
+    print(symd::sym_vector_type<decltype(vec4)>);
+    print(sizeof(decltype(vec1)));
+    print(sizeof(decltype(vec2)));
+    print(sizeof(decltype(vec3)));
+    print(sizeof(decltype(vec4)));
     
     // auto val = f0(x_v=1.0, y_v=2.0);
     // ++f4;
