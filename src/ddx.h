@@ -4,7 +4,7 @@
 #include <type_traits>
 
 #include "bin_ops.h"
-#include "special_constants.h"
+#include "zero.h"
 
 namespace symd
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "var_list.h"
-#include "special_constants.h"
+#include "zero.h"
 #include "bin_ops.h"
 
 namespace symd

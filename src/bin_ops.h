@@ -3,7 +3,7 @@
 #include "var_list.h"
 #include "constant.h"
 #include "forward_expression.h"
-#include "special_constants.h"
+#include "zero.h"
 
 namespace symd
 {
