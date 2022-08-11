@@ -26,6 +26,8 @@ int main(int argc, char** argv)
     auto f0_jac = symd::ddx((x_v*x_v+x_v)/(x_v), x_v);
     auto diff = symd::ddx(symd::exp(x_v*x_v), x_v);
     
+    auto result = diff(x_v = 2.1);
+    
     //idea: the vector function retues a pure unique variable-only vector when it can
     //otherwise, it returns a basic vector type. Therefore, only vec1 is a valid vector
     //to differentiate against. We should also be able to build a symbolic vector from a

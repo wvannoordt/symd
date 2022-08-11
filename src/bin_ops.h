@@ -4,6 +4,7 @@
 #include "constant.h"
 #include "forward_expression.h"
 #include "zero.h"
+#include "assignment_list.h"
 
 namespace symd
 {
@@ -99,6 +100,12 @@ namespace symd
         {
             typedef typename forward_expression_t<rhs_exp_t>::type base_t;
             return binary_operation_t<binary_operation_t, base_t, op_quotient>(*this, forward_expression(rhs_exp));
+        }
+        
+        template <typename... assignments_t> auto operator()(assignments_t... assignments)
+        {
+            auto assignment_list = create_assignment_list(assignments...);
+            return 0.0;
         }
     };
     
