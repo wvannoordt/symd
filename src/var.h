@@ -3,11 +3,19 @@
 #include "var_list.h"
 #include "zero.h"
 #include "bin_ops.h"
+#include "assignment.h"
+#include "unity.h"
 
 namespace symd
 {
+    template <typename T> concept basic_variable = requires(T t)
+    {
+        T::var_value();
+    };
+    
     template <const symbol_t var_id> struct var_t
     {
+        constexpr static symbol_t var_value() { return var_id; }
         typedef typename make_var_list_t<var_id>::type variable_t;
         
         template <variate_expression rhs_t> auto operator+ (const rhs_t& rhs)
@@ -29,17 +37,21 @@ namespace symd
         
         template <const symbol_t var_id_in> 
         requires (var_id_in != var_id)
-        zero_t differentiate(void) const
+        zero_t differentiate() const
         {
             return zero_t();
         }
         
         template <const symbol_t var_id_in> 
         requires (var_id_in == var_id)
-        auto differentiate(void) const
+        unity_t differentiate() const
         {
-            //this REALLY needs to not be how this works
-            return constant_t<int>(1);
+            return unity_t();
+        }
+        
+        template <assignable_type assigned_t> assignment_t<var_id, assigned_t> operator=(const assigned_t& rhs)
+        {
+            return assignment_t<var_id,assigned_t>(rhs);
         }
     };
     

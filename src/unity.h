@@ -5,18 +5,17 @@
 
 namespace symd
 {
-    //START HERE
     struct unity_t
     {
         typedef no_var_t variable_t;
-        template <typename rhs_t> auto operator+(const rhs_t& rhs) {return rhs;}
-        template <typename rhs_t> auto operator-(const rhs_t& rhs) {return rhs;}
-        template <typename rhs_t> auto operator/(const rhs_t& rhs) {return unity_t();}
-        template <typename rhs_t> auto operator*(const rhs_t& rhs) {return unity_t();}
+        template <typename rhs_t> auto operator+(const rhs_t& rhs) {return binary_operation_t<unity_t, rhs_t, op_sum>(unity_t(), rhs);}
+        template <typename rhs_t> auto operator-(const rhs_t& rhs) {return binary_operation_t<unity_t, rhs_t, op_difference>(unity_t(), rhs);}
+        template <typename rhs_t> auto operator/(const rhs_t& rhs) {return rhs;}
+        template <typename rhs_t> auto operator*(const rhs_t& rhs) {return rhs;}
     };
     
-    template <typename lhs_t> auto operator+(const lhs_t& lhs, const unity_t& zero) {return lhs;}
-    template <typename lhs_t> auto operator-(const lhs_t& lhs, const unity_t& zero) {return lhs;}
-    template <typename lhs_t> auto operator/(const lhs_t& lhs, const unity_t& zero) {return undefined_t();}
-    template <typename lhs_t> auto operator*(const lhs_t& lhs, const unity_t& zero) {return unity_t();}
+    template <typename lhs_t> auto operator+(const lhs_t& lhs, const unity_t& uni) {binary_operation_t<lhs_t, unity_t, op_sum>(lhs, unity_t());}
+    template <typename lhs_t> auto operator-(const lhs_t& lhs, const unity_t& uni) {binary_operation_t<lhs_t, unity_t, op_difference>(lhs, unity_t());}
+    template <typename lhs_t> auto operator/(const lhs_t& lhs, const unity_t& uni) {return lhs;}
+    template <typename lhs_t> auto operator*(const lhs_t& lhs, const unity_t& uni) {return lhs;}
 }

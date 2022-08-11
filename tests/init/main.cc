@@ -24,6 +24,7 @@ int main(int argc, char** argv)
     auto vec4 = symd::vector(x_v, y_v, x_v); // -> non unique, variable-only vector
     
     auto f0_jac = symd::ddx((x_v*x_v+x_v)/(x_v), x_v);
+    auto diff = symd::ddx(symd::exp(x_v*x_v), x_v);
     
     //idea: the vector function retues a pure unique variable-only vector when it can
     //otherwise, it returns a basic vector type. Therefore, only vec1 is a valid vector
@@ -38,6 +39,8 @@ int main(int argc, char** argv)
     print(sizeof(decltype(vec2)));
     print(sizeof(decltype(vec3)));
     print(sizeof(decltype(vec4)));
+    
+    
     
     // auto val = f0(x_v=1.0, y_v=2.0);
     // ++f4;
@@ -65,9 +68,10 @@ int main(int argc, char** argv)
     // symd::var_t<u_r> u_r_v;
     // symd::var_t<p_l> p_l_v;
     // symd::var_t<p_r> p_r_v;
+    // 
     // auto sym_vec   = symd::vector(rho_l_v, rho_r_v, u_l_v, u_r_v, p_l_v, p_r_v);
-    // auto flux_func = symd::vector_func(0.25*(rho_l_v+rho_r_v)*(u_l_v+u_r_v), 0.125*(rho_l_v+rho_r_v)*(u_l_v+u_r_v)*(u_l_v+u_r_v)+0.5*(p_l_v + p_r_v));
-    // auto jacobian  = symd::ddx<sym_vec>(flux_func);
+    // auto flux_func = symd::vector(0.25*(rho_l_v+rho_r_v)*(u_l_v+u_r_v), 0.125*(rho_l_v+rho_r_v)*(u_l_v+u_r_v)*(u_l_v+u_r_v)+0.5*(p_l_v + p_r_v));
+    // auto jacobian  = symd::ddx(flux_func, sym_vec);
     // auto var_list = symd::var_list_union<symd::make_var_list_t<x>::type, symd::make_var_list_t<x, y>::type>::type();
     
     
