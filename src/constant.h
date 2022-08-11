@@ -1,9 +1,7 @@
 #pragma once
 
 namespace symd
-{
-    struct zero_t {};
-    
+{    
     template <typename base_t> struct constant_t
     {
         typedef no_var_t variable_t;

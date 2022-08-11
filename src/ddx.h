@@ -1,18 +1,30 @@
 #pragma once
 
+#include <concepts>
 #include <type_traits>
 
 #include "bin_ops.h"
+#include "special_constants.h"
 
 namespace symd
 {
-    // template <const std::size_t var_id, typename lhs_t, typename rhs_t> auto ddx(const binary_operation_t<lhs_t, op_sum, rhs_t>& prod)
+    // template <typename func_t, const symbol_t var_id>
+    // requires (!var_list_contains<typename func_t::variable_t,var_id>::value)
+    // zero_t ddx_single_valued(const func_t& func, const var_t<var_id>& var)
     // {
-    //     return ddx<var_id>(lhs_t()) + ddx<var_id>(lhs_t());
+    //     return zero_t();
     // }
     // 
-    // template <const std::size_t var_id, typename lhs_t, typename rhs_t> auto ddx(const binary_operation_t<lhs_t, op_difference, rhs_t>& prod)
+    // template <typename func_t, const symbol_t var_id>
+    // requires (var_list_contains<typename func_t::variable_t,var_id>::value)
+    // zero_t ddx_single_valued(const func_t& func, const var_t<var_id>& var)
     // {
-    //     return ddx<var_id>(lhs_t()) - ddx<var_id>(lhs_t());
+    //     return func.differentiate<var_id>();
     // }
+    
+    template <typename func_t, const symbol_t var_id> auto ddx(const func_t& func, const var_t<var_id>& var)
+    {
+        // return ddx_single_valued(func, var);
+        return 0;
+    }
 }

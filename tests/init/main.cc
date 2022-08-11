@@ -3,12 +3,13 @@
 
 int main(int argc, char** argv)
 {
-    enum syms {x, y, z, w};
+    enum syms {x, y, z, w, t};
     
     symd::var_t<x> x_v;
     symd::var_t<y> y_v;
     symd::var_t<z> z_v;
     symd::var_t<w> w_v;
+    symd::var_t<t> t_v;
     
     auto f0 = x_v+y_v;
     auto h0 = f0 + w_v;
@@ -21,6 +22,8 @@ int main(int argc, char** argv)
     auto vec2 = symd::vector(x_v, y_v, z_v*y_v); // -> unique, non variable-only vector
     auto vec3 = symd::vector(x_v, y_v, z_v*y_v, x_v); // -> non unique, non variable-only vector
     auto vec4 = symd::vector(x_v, y_v, x_v); // -> non unique, variable-only vector
+    
+    auto f0_jac = symd::ddx(f0, x_v);
     
     //idea: the vector function retues a pure unique variable-only vector when it can
     //otherwise, it returns a basic vector type. Therefore, only vec1 is a valid vector

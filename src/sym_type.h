@@ -2,5 +2,5 @@
 
 namespace symd
 {
-    typedef int symbol_t;
+    typedef long unsigned int symbol_t;
 }

@@ -3,6 +3,7 @@
 #include "var_list.h"
 #include "constant.h"
 #include "forward_expression.h"
+#include "special_constants.h"
 
 namespace symd
 {
@@ -13,6 +14,13 @@ namespace symd
         op_product,
         op_quotient
     };
+    
+    // template <typename lhs_t, typename rhs_t, const binary_operation bin_op, const symbol_t var_id>
+    // requires (bin_op == op_sum)
+    // auto differentiate_binary_operation(const lhs_t& lhs, const rhs_t& rhs, const var_t<var_id>& var)
+    // {
+    //     return lhs.differentiate(var) + rhs.differentiate(var);
+    // }
     
     template <typename lhs_t, typename rhs_t, const binary_operation bin_op> struct binary_operation_t
     {
@@ -28,6 +36,20 @@ namespace symd
         {
             lhs = lhs_in;
             rhs = rhs_in;
+        }
+        
+        template <const symbol_t var_id> 
+        requires (!var_list_contains<variable_t, var_id>::value)
+        zero_t differentiate(void)
+        {
+            return zero_t();
+        }
+        
+        template <const symbol_t var_id> 
+        requires (var_list_contains<variable_t, var_id>::value)
+        auto differentiate(void)
+        {
+            return differentiate_binary_operation<lhs_t, rhs_t, bin_op, var_id>(lhs, rhs);
         }
         
         template <typename rhs_exp_t>
