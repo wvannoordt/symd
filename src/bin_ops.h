@@ -15,12 +15,33 @@ namespace symd
         op_quotient
     };
     
-    // template <typename lhs_t, typename rhs_t, const binary_operation bin_op, const symbol_t var_id>
-    // requires (bin_op == op_sum)
-    // auto differentiate_binary_operation(const lhs_t& lhs, const rhs_t& rhs, const var_t<var_id>& var)
-    // {
-    //     return lhs.differentiate(var) + rhs.differentiate(var);
-    // }
+    template <typename lhs_t, typename rhs_t, const binary_operation bin_op, const symbol_t var_id>
+    requires (bin_op == op_sum)
+    auto differentiate_binary_operation(const lhs_t& lhs, const rhs_t& rhs)
+    {
+        return lhs. template differentiate<var_id>() + rhs. template differentiate<var_id>();
+    }
+    
+    template <typename lhs_t, typename rhs_t, const binary_operation bin_op, const symbol_t var_id>
+    requires (bin_op == op_difference)
+    auto differentiate_binary_operation(const lhs_t& lhs, const rhs_t& rhs)
+    {
+        return lhs. template differentiate<var_id>() - rhs. template differentiate<var_id>();
+    }
+    
+    template <typename lhs_t, typename rhs_t, const binary_operation bin_op, const symbol_t var_id>
+    requires (bin_op == op_product)
+    auto differentiate_binary_operation(const lhs_t& lhs, const rhs_t& rhs)
+    {
+        return lhs. template differentiate<var_id>()*rhs + rhs. template differentiate<var_id>()*lhs;
+    }
+    
+    template <typename lhs_t, typename rhs_t, const binary_operation bin_op, const symbol_t var_id>
+    requires (bin_op == op_quotient)
+    auto differentiate_binary_operation(const lhs_t& lhs, const rhs_t& rhs)
+    {
+        return ((lhs. template differentiate<var_id>())*rhs - (rhs. template differentiate<var_id>())*lhs)/(rhs*rhs);
+    }
     
     template <typename lhs_t, typename rhs_t, const binary_operation bin_op> struct binary_operation_t
     {
@@ -40,14 +61,14 @@ namespace symd
         
         template <const symbol_t var_id> 
         requires (!var_list_contains<variable_t, var_id>::value)
-        zero_t differentiate(void)
+        zero_t differentiate(void) const
         {
             return zero_t();
         }
         
         template <const symbol_t var_id> 
         requires (var_list_contains<variable_t, var_id>::value)
-        auto differentiate(void)
+        auto differentiate(void) const
         {
             return differentiate_binary_operation<lhs_t, rhs_t, bin_op, var_id>(lhs, rhs);
         }
@@ -82,34 +103,34 @@ namespace symd
     };
     
     template <typename lhs_exp_t, typename bin_lhs_t, typename bin_rhs_t, const binary_operation bin_op>
-    requires (!variate_expression<lhs_exp_t>)
     auto operator +(const lhs_exp_t& lhs_exp, const binary_operation_t<bin_lhs_t, bin_rhs_t, bin_op>& rhs_exp)
     {
+        using base_t = typename forward_expression_t<lhs_exp_t>::type;
         using arg_t = binary_operation_t<bin_lhs_t, bin_rhs_t, bin_op>;
-        return binary_operation_t<constant_t<lhs_exp_t>, arg_t, op_sum>(constant_t<lhs_exp_t>(lhs_exp), rhs_exp);
+        return binary_operation_t<base_t, arg_t, op_sum>(forward_expression(lhs_exp), rhs_exp);
     }
     
     template <typename lhs_exp_t, typename bin_lhs_t, typename bin_rhs_t, const binary_operation bin_op>
-    requires (!variate_expression<lhs_exp_t>)
     auto operator -(const lhs_exp_t& lhs_exp, const binary_operation_t<bin_lhs_t, bin_rhs_t, bin_op>& rhs_exp)
     {
+        using base_t = typename forward_expression_t<lhs_exp_t>::type;
         using arg_t = binary_operation_t<bin_lhs_t, bin_rhs_t, bin_op>;
-        return binary_operation_t<constant_t<lhs_exp_t>, arg_t, op_difference>(constant_t<lhs_exp_t>(lhs_exp), rhs_exp);
+        return binary_operation_t<base_t, arg_t, op_difference>(forward_expression(lhs_exp), rhs_exp);
     }
     
     template <typename lhs_exp_t, typename bin_lhs_t, typename bin_rhs_t, const binary_operation bin_op>
-    requires (!variate_expression<lhs_exp_t>)
     auto operator *(const lhs_exp_t& lhs_exp, const binary_operation_t<bin_lhs_t, bin_rhs_t, bin_op>& rhs_exp)
     {
+        using base_t = typename forward_expression_t<lhs_exp_t>::type;
         using arg_t = binary_operation_t<bin_lhs_t, bin_rhs_t, bin_op>;
-        return binary_operation_t<constant_t<lhs_exp_t>, arg_t, op_product>(constant_t<lhs_exp_t>(lhs_exp), rhs_exp);
+        return binary_operation_t<base_t, arg_t, op_product>(forward_expression(lhs_exp), rhs_exp);
     }
     
     template <typename lhs_exp_t, typename bin_lhs_t, typename bin_rhs_t, const binary_operation bin_op>
-    requires (!variate_expression<lhs_exp_t>)
     auto operator /(const lhs_exp_t& lhs_exp, const binary_operation_t<bin_lhs_t, bin_rhs_t, bin_op>& rhs_exp)
     {
+        using base_t = typename forward_expression_t<lhs_exp_t>::type;
         using arg_t = binary_operation_t<bin_lhs_t, bin_rhs_t, bin_op>;
-        return binary_operation_t<constant_t<lhs_exp_t>, arg_t, op_quotient>(constant_t<lhs_exp_t>(lhs_exp), rhs_exp);
+        return binary_operation_t<base_t, arg_t, op_quotient>(forward_expression(lhs_exp), rhs_exp);
     }
 }

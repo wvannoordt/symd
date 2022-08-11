@@ -1,11 +1,12 @@
 #pragma once
 
 #include "var_list.h"
+#include "special_constants.h"
 #include "bin_ops.h"
 
 namespace symd
 {
-    template <const std::size_t var_id> struct var_t
+    template <const symbol_t var_id> struct var_t
     {
         typedef typename make_var_list_t<var_id>::type variable_t;
         
@@ -24,6 +25,21 @@ namespace symd
         template <variate_expression rhs_t> auto operator/ (const rhs_t& rhs)
         {
             return binary_operation_t<var_t<var_id>, rhs_t, op_quotient>(*this, rhs);
+        }
+        
+        template <const symbol_t var_id_in> 
+        requires (var_id_in != var_id)
+        zero_t differentiate(void) const
+        {
+            return zero_t();
+        }
+        
+        template <const symbol_t var_id_in> 
+        requires (var_id_in == var_id)
+        auto differentiate(void) const
+        {
+            //this REALLY needs to not be how this works
+            return constant_t<int>(1);
         }
     };
     

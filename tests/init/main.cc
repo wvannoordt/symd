@@ -23,7 +23,7 @@ int main(int argc, char** argv)
     auto vec3 = symd::vector(x_v, y_v, z_v*y_v, x_v); // -> non unique, non variable-only vector
     auto vec4 = symd::vector(x_v, y_v, x_v); // -> non unique, variable-only vector
     
-    auto f0_jac = symd::ddx(f0, x_v);
+    auto f0_jac = symd::ddx((x_v*x_v+x_v)/(x_v), x_v);
     
     //idea: the vector function retues a pure unique variable-only vector when it can
     //otherwise, it returns a basic vector type. Therefore, only vec1 is a valid vector
