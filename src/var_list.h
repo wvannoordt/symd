@@ -54,6 +54,11 @@ namespace symd
         > type;
     };
     
+    template <> struct var_list_concat_helper<no_var_t, no_var_t>
+    {
+        typedef no_var_t type;
+    };
+    
     template <typename rhs_t> struct var_list_concat_helper<no_var_t, rhs_t>
     {
         typedef rhs_t type;

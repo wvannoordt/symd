@@ -96,3 +96,13 @@ int main(int argc, char** argv)
     return 0;
 }
 ```
+
+## Other Features
+
+Other features not listed above are available in SYMD, including:
+
+* Higher-order derivatives:
+
+`auto d2f_dx2 = symd::ddx<2>(f, x)`
+
+For more information, the reader is referred to the `examples` directory.
