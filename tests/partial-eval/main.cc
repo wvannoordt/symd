@@ -11,18 +11,23 @@ int main(int argc, char** argv)
     symd::var_t<yv> y;
     
     //define/evaluate a function
-    auto func = y*y + x*x;
-    auto result = func(x=1.1, y=2.1);
+    auto func = 3*y*y + x*x*x;
+    auto part = func(y=2);
     
+    auto result = part(x=2.0);
     std::cout << result << std::endl;
-    // "5.62"
+    // "20"
     
-    //differentiate the function with respect to variable "x"
-    auto func_diff = symd::ddx(func, x);
-    result = func_diff(x=1.1, y=2.1);
-    
+    //differentiate partially evaluated function
+    result = ddx(part, x)(x=2.0);
     std::cout << result << std::endl;
-    // "2.2"
+    // "12"
+    
+    //define a composite function
+    auto comp = func(y=x*x);
+    result = comp(x=2.0);
+    std::cout << result << std::endl;
+    // "56"
     
     return 0;
 }

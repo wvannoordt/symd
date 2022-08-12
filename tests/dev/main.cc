@@ -11,19 +11,19 @@ int main(int argc, char** argv)
     symd::var_t<w_v> w;
     symd::var_t<t_v> t;
     
-    auto f0 = x_v+y;
-    auto h0 = f0 + w;
-    auto f1 = 13*((x*z + f0)*w + 5);
-    auto f2 = f1*h0;
-    auto f3 = symd::exp(f0) + x;
-    auto f4 = 1 + symd::exp(f0) + 15*y+f2;
-    
-    auto vec1 = symd::vector(x, y, z); // -> unique, variable-only vector
-    auto vec2 = symd::vector(x, y, z*y); // -> unique, non variable-only vector
-    auto vec3 = symd::vector(x, y, z*y, x); // -> non unique, non variable-only vector
-    auto vec4 = symd::vector(x, y, x); // -> non unique, variable-only vector
-    
-    auto f0_jac = symd::ddx((x*x+x)/(x), x);
+    // auto f0 = x_v+y;
+    // auto h0 = f0 + w;
+    // auto f1 = 13*((x*z + f0)*w + 5);
+    // auto f2 = f1*h0;
+    // auto f3 = symd::exp(f0) + x;
+    // auto f4 = 1 + symd::exp(f0) + 15*y+f2;
+    // 
+    // auto vec1 = symd::vector(x, y, z); // -> unique, variable-only vector
+    // auto vec2 = symd::vector(x, y, z*y); // -> unique, non variable-only vector
+    // auto vec3 = symd::vector(x, y, z*y, x); // -> non unique, non variable-only vector
+    // auto vec4 = symd::vector(x, y, x); // -> non unique, variable-only vector
+    // 
+    // auto f0_jac = symd::ddx((x*x+x)/(x), x);
     auto diff = symd::ddx(symd::exp(x*x), x);
     // print(diff(x=1.0));
     

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "sym_type.h"
+#include "zero.h"
+
 namespace symd
 {    
     template <typename base_t> struct constant_t
@@ -14,5 +17,7 @@ namespace symd
         {
             return data;
         }
+        
+        template <const symbol_t var_id> zero_t differentiate() const {return zero_t();}
     };
 }
