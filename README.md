@@ -13,7 +13,7 @@ single header file `src/symd.h`. All of the public utilities in SYMD fall under 
 `symd` namespace. SYMD utilizes concepts from the c++20 standard, so it is recommended
 to use e.g. `g++ -std=c++20 ...` to build projects.
 
-## Example
+## Example -- Basic Usage
 
 The following example simply defines a function and evaluates it. Note that
 the assignment-style evaluation syntax `func(x=1.1, y=2.1)` is necessary.
