@@ -25,22 +25,28 @@ int main(int argc, char** argv)
     
     auto f0_jac = symd::ddx((x_v*x_v+x_v)/(x_v), x_v);
     auto diff = symd::ddx(symd::exp(x_v*x_v), x_v);
+    // print(diff(x_v=1.0));
     
-    auto result = diff(x_v = 2.1);
+    auto func1   = x_v*y_v + z_v*y_v;
+    auto p_func1 = func1(x_v = 2.1);
+    auto func2   = 2.1*y_v + z_v*y_v;
+    auto result1 = p_func1(y_v=2.0, z_v=1.1);
+    auto result2 = func2  (y_v=2.0, z_v=1.1);
+    print(result1, result2);
     
     //idea: the vector function retues a pure unique variable-only vector when it can
     //otherwise, it returns a basic vector type. Therefore, only vec1 is a valid vector
     //to differentiate against. We should also be able to build a symbolic vector from a
     //var_list
     
-    print(symd::sym_vector_type<decltype(vec1)>);
-    print(symd::sym_vector_type<decltype(vec2)>);
-    print(symd::sym_vector_type<decltype(vec3)>);
-    print(symd::sym_vector_type<decltype(vec4)>);
-    print(sizeof(decltype(vec1)));
-    print(sizeof(decltype(vec2)));
-    print(sizeof(decltype(vec3)));
-    print(sizeof(decltype(vec4)));
+    // print(symd::sym_vector_type<decltype(vec1)>);
+    // print(symd::sym_vector_type<decltype(vec2)>);
+    // print(symd::sym_vector_type<decltype(vec3)>);
+    // print(symd::sym_vector_type<decltype(vec4)>);
+    // print(sizeof(decltype(vec1)));
+    // print(sizeof(decltype(vec2)));
+    // print(sizeof(decltype(vec3)));
+    // print(sizeof(decltype(vec4)));
     
     
     

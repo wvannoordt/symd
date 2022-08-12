@@ -8,5 +8,11 @@ namespace symd
         base_t data;
         constant_t(){}
         constant_t(const base_t& data_in){data = data_in;}
+        
+        template <typename... assignments_t>
+        auto operator()(assignments_t... assignments) const
+        {
+            return data;
+        }
     };
 }

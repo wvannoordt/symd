@@ -53,6 +53,20 @@ namespace symd
         {
             return assignment_t<var_id,assigned_t>(rhs);
         }
+        
+        template <typename... assignments_t>
+        requires (contains_assignment_for<var_id, assignments_t...>())
+        auto operator()(assignments_t... assignments) const
+        {
+            return fetch_assignment_value<var_id, assignments_t...>(assignments...);
+        }
+        
+        template <typename... assignments_t>
+        requires (!contains_assignment_for<var_id, assignments_t...>())
+        const var_t<var_id>& operator()(assignments_t... assignments) const
+        {
+            return *this;
+        }
     };
     
     template <variate_expression lhs_t, const std::size_t var_id> auto operator +(const lhs_t& lhs, const var_t<var_id>& rhs)

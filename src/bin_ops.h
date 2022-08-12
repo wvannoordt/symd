@@ -4,7 +4,6 @@
 #include "constant.h"
 #include "forward_expression.h"
 #include "zero.h"
-#include "assignment_list.h"
 
 namespace symd
 {
@@ -42,6 +41,34 @@ namespace symd
     auto differentiate_binary_operation(const lhs_t& lhs, const rhs_t& rhs)
     {
         return ((lhs. template differentiate<var_id>())*rhs - (rhs. template differentiate<var_id>())*lhs)/(rhs*rhs);
+    }
+    
+    template <typename lhs_t, typename rhs_t, const binary_operation bin_op, typename... assignments_t>
+    requires(bin_op == op_sum)
+    auto eval_binary_operation(const lhs_t& lhs, const rhs_t& rhs, assignments_t... assignments)
+    {
+        return lhs(assignments...)+rhs(assignments...);
+    }
+    
+    template <typename lhs_t, typename rhs_t, const binary_operation bin_op, typename... assignments_t>
+    requires(bin_op == op_difference)
+    auto eval_binary_operation(const lhs_t& lhs, const rhs_t& rhs, assignments_t... assignments)
+    {
+        return lhs(assignments...)-rhs(assignments...);
+    }
+    
+    template <typename lhs_t, typename rhs_t, const binary_operation bin_op, typename... assignments_t>
+    requires(bin_op == op_product)
+    auto eval_binary_operation(const lhs_t& lhs, const rhs_t& rhs, assignments_t... assignments)
+    {
+        return lhs(assignments...)*rhs(assignments...);
+    }
+    
+    template <typename lhs_t, typename rhs_t, const binary_operation bin_op, typename... assignments_t>
+    requires(bin_op == op_quotient)
+    auto eval_binary_operation(const lhs_t& lhs, const rhs_t& rhs, assignments_t... assignments)
+    {
+        return lhs(assignments...)/rhs(assignments...);
     }
     
     template <typename lhs_t, typename rhs_t, const binary_operation bin_op> struct binary_operation_t
@@ -102,10 +129,9 @@ namespace symd
             return binary_operation_t<binary_operation_t, base_t, op_quotient>(*this, forward_expression(rhs_exp));
         }
         
-        template <typename... assignments_t> auto operator()(assignments_t... assignments)
+        template <typename... assignments_t> auto operator()(assignments_t... assignments) const
         {
-            auto assignment_list = create_assignment_list(assignments...);
-            return 0.0;
+            return eval_binary_operation<lhs_t, rhs_t, bin_op, assignments_t...>(lhs, rhs, assignments...);
         }
     };
     
