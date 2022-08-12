@@ -87,7 +87,7 @@ int main(int argc, char** argv)
     std::cout << result << std::endl;
     // "12"
     
-    //define a composite function
+    //define/evaluate a composite function
     auto comp = func(y=x*x);
     result = comp(x=2.0);
     std::cout << result << std::endl;
