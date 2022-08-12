@@ -3,35 +3,35 @@
 
 int main(int argc, char** argv)
 {
-    enum syms {x, y, z, w, t};
+    enum syms {x_v, y_v, z_v, w_v, t_v};
     
-    symd::var_t<x> x_v;
-    symd::var_t<y> y_v;
-    symd::var_t<z> z_v;
-    symd::var_t<w> w_v;
-    symd::var_t<t> t_v;
+    symd::var_t<x_v> x;
+    symd::var_t<y_v> y;
+    symd::var_t<z_v> z;
+    symd::var_t<w_v> w;
+    symd::var_t<t_v> t;
     
-    auto f0 = x_v+y_v;
-    auto h0 = f0 + w_v;
-    auto f1 = 13*((x_v*z_v + f0)*w_v + 5);
+    auto f0 = x_v+y;
+    auto h0 = f0 + w;
+    auto f1 = 13*((x*z + f0)*w + 5);
     auto f2 = f1*h0;
-    auto f3 = symd::exp(f0) + x_v;
-    auto f4 = 1 + symd::exp(f0) + 15*y_v+f2;
+    auto f3 = symd::exp(f0) + x;
+    auto f4 = 1 + symd::exp(f0) + 15*y+f2;
     
-    auto vec1 = symd::vector(x_v, y_v, z_v); // -> unique, variable-only vector
-    auto vec2 = symd::vector(x_v, y_v, z_v*y_v); // -> unique, non variable-only vector
-    auto vec3 = symd::vector(x_v, y_v, z_v*y_v, x_v); // -> non unique, non variable-only vector
-    auto vec4 = symd::vector(x_v, y_v, x_v); // -> non unique, variable-only vector
+    auto vec1 = symd::vector(x, y, z); // -> unique, variable-only vector
+    auto vec2 = symd::vector(x, y, z*y); // -> unique, non variable-only vector
+    auto vec3 = symd::vector(x, y, z*y, x); // -> non unique, non variable-only vector
+    auto vec4 = symd::vector(x, y, x); // -> non unique, variable-only vector
     
-    auto f0_jac = symd::ddx((x_v*x_v+x_v)/(x_v), x_v);
-    auto diff = symd::ddx(symd::exp(x_v*x_v), x_v);
-    // print(diff(x_v=1.0));
+    auto f0_jac = symd::ddx((x*x+x)/(x), x);
+    auto diff = symd::ddx(symd::exp(x*x), x);
+    // print(diff(x=1.0));
     
-    auto func1   = x_v*y_v + z_v*y_v;
-    auto p_func1 = func1(x_v = 2.1);
-    auto func2   = 2.1*y_v + z_v*y_v;
-    auto result1 = p_func1(y_v=2.0, z_v=1.1);
-    auto result2 = func2  (y_v=2.0, z_v=1.1);
+    auto func1   = x*y + z*y;
+    auto p_func1 = func1(x = 2.1);
+    auto func2   = 2.1*y + z*y;
+    auto result1 = p_func1(y=2.0, z=1.1);
+    auto result2 = func2  (y=2.0, z=1.1);
     print(result1, result2);
     
     //idea: the vector function retues a pure unique variable-only vector when it can
@@ -50,35 +50,35 @@ int main(int argc, char** argv)
     
     
     
-    // auto val = f0(x_v=1.0, y_v=2.0);
+    // auto val = f0(x=1.0, y=2.0);
     // ++f4;
     // ++f3;
-    // auto f_x = symd::ddx<x_v>()
+    // auto f_x = symd::ddx<x>()
     
     // another idea: partial evaluation:
-    // auto h1 = x_v + y_v*y_v;
-    // auto h2 = h1(y_v=2.0); //-> equivalent to x_v + 4.0
+    // auto h1 = x + y*y;
+    // auto h2 = h1(y=2.0); //-> equivalent to x + 4.0
     
-    // auto val1   = func(x_v=1.0, y_v=2.0);
-    // auto vec1_v = symd::vector(x_v, y_v);
-    // auto vec2_v = symd::vector(x_v, y_v, z_v);
-    // auto val2   = func(vec1_v={1.0, 2.0});
-    // auto val2   = func(vec2_v={1.0, 2.0,3.0}); // ignores the 3.0
-    // auto val3   = func(x_v=1.0); // compile-time error
+    // auto val1   = func(x=1.0, y=2.0);
+    // auto vec1_v = symd::vector(x, y);
+    // auto vec2_v = symd::vector(x, y, z);
+    // auto val2   = func(vec1={1.0, 2.0});
+    // auto val2   = func(vec2={1.0, 2.0,3.0}); // ignores the 3.0
+    // auto val3   = func(x=1.0); // compile-time error
     
     // wishlist
     
     // enum syms1 {rho_l, rho_r, u_l, u_r, p_l, p_r};
     // 
-    // symd::var_t<rho_l> rho_l_v;
-    // symd::var_t<rho_r> rho_r_v;
-    // symd::var_t<u_l> u_l_v;
-    // symd::var_t<u_r> u_r_v;
-    // symd::var_t<p_l> p_l_v;
-    // symd::var_t<p_r> p_r_v;
+    // symd::var_t<rho_l> rho_l;
+    // symd::var_t<rho_r> rho_r;
+    // symd::var_t<u_l> u_l;
+    // symd::var_t<u_r> u_r;
+    // symd::var_t<p_l> p_l;
+    // symd::var_t<p_r> p_r;
     // 
-    // auto sym_vec   = symd::vector(rho_l_v, rho_r_v, u_l_v, u_r_v, p_l_v, p_r_v);
-    // auto flux_func = symd::vector(0.25*(rho_l_v+rho_r_v)*(u_l_v+u_r_v), 0.125*(rho_l_v+rho_r_v)*(u_l_v+u_r_v)*(u_l_v+u_r_v)+0.5*(p_l_v + p_r_v));
+    // auto symec   = symd::vector(rho_l, rho_r, u_l, u_r, p_l, p_r);
+    // auto flux_func = symd::vector(0.25*(rho_l+rho_r)*(u_l+u_r), 0.125*(rho_l+rho_r)*(u_l+u_r)*(u_l+u_r)+0.5*(p_l + p_r));
     // auto jacobian  = symd::ddx(flux_func, sym_vec);
     // auto var_list = symd::var_list_union<symd::make_var_list_t<x>::type, symd::make_var_list_t<x, y>::type>::type();
     
