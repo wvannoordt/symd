@@ -9,7 +9,7 @@ namespace symd
     {
         typedef no_var_t variable_t;
         template <typename rhs_t> auto operator+(const rhs_t& rhs) {return rhs;}
-        template <typename rhs_t> auto operator-(const rhs_t& rhs) {return rhs;}
+        template <typename rhs_t> auto operator-(const rhs_t& rhs) {return -1*rhs;}
         template <typename rhs_t> auto operator/(const rhs_t& rhs) {return zero_t();}
         template <typename rhs_t> auto operator*(const rhs_t& rhs) {return zero_t();}
     };

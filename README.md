@@ -105,4 +105,6 @@ Other features not listed above are available in SYMD, including:
 
 `auto d2f_dx2 = symd::ddx<2>(f, x)`
 
+* Standard mathematical functions: `sqrt`, `exp`, `sin`, `cos`, `tan`, `csc`, `sec`, etc.
+
 For more information, the reader is referred to the `examples` directory.

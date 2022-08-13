@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 #include "var_list.h"
 #include "bin_ops.h"
 #include "forward_expression.h"
@@ -15,6 +17,13 @@ namespace symd
         
         unary_operation_t(){}
         unary_operation_t(const expression_t& expression_in){expression = expression_in;}
+        
+        template <const symbol_t var_id> 
+        requires (!var_list_contains<variable_t, var_id>::value)
+        zero_t differentiate(void) const
+        {
+            return zero_t();
+        }
         
         //variate expressions
         template <typename rhs_t> auto operator+(const rhs_t& rhs)

@@ -22,16 +22,16 @@ namespace symd
         return func. template differentiate<var_id>();
     }
     
-    template <const std::size_t order, typename func_t, const symbol_t var_id>
-    requires (order == 1)
-    auto ddx(const func_t& func, const var_t<var_id>& var)
+    template <const std::size_t order=1, typename func_t, typename variable_t>
+    requires ((order == 1) && basic_variable<variable_t>)
+    auto ddx(const func_t& func, const variable_t& var)
     {
         return ddx_single_valued(func, var);
     }
     
-    template <const std::size_t order, typename func_t, const symbol_t var_id>
-    requires (order > 1)
-    auto ddx(const func_t& func, const var_t<var_id>& var)
+    template <const std::size_t order, typename func_t, typename variable_t>
+    requires ((order > 1) && basic_variable<variable_t>)
+    auto ddx(const func_t& func, const variable_t& var)
     {
         return ddx<1>(ddx<order-1>(func, var), var);
     }

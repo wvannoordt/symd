@@ -7,6 +7,8 @@
 
 namespace symd
 {
+    struct unity_t;
+    
     enum binary_operation
     {
         op_sum,
@@ -102,7 +104,7 @@ namespace symd
         }
         
         template <typename rhs_exp_t>
-        requires (!std::same_as<rhs_exp_t, zero_t>)
+        requires (!std::same_as<rhs_exp_t, zero_t> && !std::same_as<rhs_exp_t, unity_t>)
         constexpr auto operator +(const rhs_exp_t& rhs_exp)
         {
             typedef typename forward_expression_t<rhs_exp_t>::type base_t;
@@ -110,7 +112,7 @@ namespace symd
         }
         
         template <typename rhs_exp_t>
-        requires (!std::same_as<rhs_exp_t, zero_t>)
+        requires (!std::same_as<rhs_exp_t, zero_t> && !std::same_as<rhs_exp_t, unity_t>)
         constexpr auto operator -(const rhs_exp_t& rhs_exp)
         {
             typedef typename forward_expression_t<rhs_exp_t>::type base_t;
@@ -118,7 +120,7 @@ namespace symd
         }
         
         template <typename rhs_exp_t>
-        requires (!std::same_as<rhs_exp_t, zero_t>)
+        requires (!std::same_as<rhs_exp_t, zero_t> && !std::same_as<rhs_exp_t, unity_t>)
         constexpr auto operator *(const rhs_exp_t& rhs_exp)
         {
             typedef typename forward_expression_t<rhs_exp_t>::type base_t;
@@ -126,7 +128,7 @@ namespace symd
         }
         
         template <typename rhs_exp_t>
-        requires (!std::same_as<rhs_exp_t, zero_t>)
+        requires (!std::same_as<rhs_exp_t, zero_t> && !std::same_as<rhs_exp_t, unity_t>)
         constexpr auto operator /(const rhs_exp_t& rhs_exp)
         {
             typedef typename forward_expression_t<rhs_exp_t>::type base_t;
