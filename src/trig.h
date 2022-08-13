@@ -101,7 +101,7 @@ namespace symd
         static auto eval_trig(const data_t& data) { return 1/std::tan(data); }
         
         template <typename data_t> requires (!trig_evaluatable<data_t>)
-        static auto eval_expr(const data_t& data) { return trig_t<data_t, tfunc>(data); }
+        static auto eval_trig(const data_t& data) { return trig_t<data_t, tfunc>(data); }
         
         template <typename... assignments_t> auto operator()(assignments_t... assignments) const
         {
