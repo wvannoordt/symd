@@ -28,6 +28,13 @@ namespace symd
         typedef unary_operation_t<expression_t, trig_t<expression_t, tfunc>> base_t;
         using base_t::base_t;
         
+        template <const symbol_t var_id> 
+        requires (!var_list_contains<typename base_t::variable_t, var_id>::value)
+        zero_t differentiate(void) const
+        {
+            return zero_t();
+        }
+        
         template <const symbol_t var_id>
         requires (var_list_contains<typename base_t::variable_t, var_id>::value && (tfunc==trig_sin))
         auto differentiate(void) const

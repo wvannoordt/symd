@@ -12,6 +12,10 @@ namespace symd
         template <typename rhs_t> auto operator-(const rhs_t& rhs) {return binary_operation_t<unity_t, rhs_t, op_difference>(unity_t(), rhs);}
         template <typename rhs_t> auto operator/(const rhs_t& rhs) {return 1/rhs;}
         template <typename rhs_t> auto operator*(const rhs_t& rhs) {return rhs;}
+        template <typename... assignments_t> auto operator()(assignments_t... assignments) const
+        {
+            return 1;
+        }
     };
     
     template <typename lhs_t> auto operator+(const lhs_t& lhs, const unity_t& uni) {return binary_operation_t<lhs_t, unity_t, op_sum>(lhs, unity_t());}

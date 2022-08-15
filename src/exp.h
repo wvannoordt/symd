@@ -13,6 +13,13 @@ namespace symd
         using base_t::base_t;
         
         template <const symbol_t var_id> 
+        requires (!var_list_contains<typename base_t::variable_t, var_id>::value)
+        zero_t differentiate(void) const
+        {
+            return zero_t();
+        }
+        
+        template <const symbol_t var_id> 
         requires (var_list_contains<typename base_t::variable_t, var_id>::value)
         auto differentiate(void) const
         {

@@ -2,6 +2,7 @@
 
 #include "sym_type.h"
 #include "zero.h"
+#include "var_list.h"
 
 namespace symd
 {    
@@ -18,6 +19,54 @@ namespace symd
             return data;
         }
         
+        template <typename rhs_t> requires (!variate_expression<rhs_t>)
+        auto operator + (const rhs_t& rhs) const
+        {
+            return constant_t(data+rhs);
+        }
+        
+        template <typename rhs_t> requires (!variate_expression<rhs_t>)
+        auto operator - (const rhs_t& rhs) const
+        {
+            return constant_t(data-rhs);
+        }
+        
+        template <typename rhs_t> requires (!variate_expression<rhs_t>)
+        auto operator / (const rhs_t& rhs) const
+        {
+            return constant_t(data/rhs);
+        }
+        
+        template <typename rhs_t> requires (!variate_expression<rhs_t>)
+        auto operator * (const rhs_t& rhs) const
+        {
+            return constant_t(data*rhs);
+        }
+        
         template <const symbol_t var_id> zero_t differentiate() const {return zero_t();}
     };
+    
+    template <typename lhs_t, typename rhs_t> requires (!variate_expression<lhs_t>)
+    auto operator + (const lhs_t& lhs, const constant_t<rhs_t>& rhs)
+    {
+        return constant_t(lhs+rhs.data);
+    }
+    
+    template <typename lhs_t, typename rhs_t> requires (!variate_expression<lhs_t>)
+    auto operator - (const lhs_t& lhs, const constant_t<rhs_t>& rhs)
+    {
+        return constant_t(lhs-rhs.data);
+    }
+    
+    template <typename lhs_t, typename rhs_t> requires (!variate_expression<lhs_t>)
+    auto operator * (const lhs_t& lhs, const constant_t<rhs_t>& rhs)
+    {
+        return constant_t(lhs*rhs.data);
+    }
+    
+    template <typename lhs_t, typename rhs_t> requires (!variate_expression<lhs_t>)
+    auto operator / (const lhs_t& lhs, const constant_t<rhs_t>& rhs)
+    {
+        return constant_t(lhs/rhs.data);
+    }
 }

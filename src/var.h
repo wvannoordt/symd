@@ -5,6 +5,7 @@
 #include "bin_ops.h"
 #include "assignment.h"
 #include "unity.h"
+#include "forward_expression.h"
 
 namespace symd
 {
@@ -18,21 +19,25 @@ namespace symd
         constexpr static symbol_t var_value() { return var_id; }
         typedef typename make_var_list_t<var_id>::type variable_t;
         
-        template <variate_expression rhs_t> auto operator+ (const rhs_t& rhs)
+        template <typename rhs_t> auto operator+ (const rhs_t& rhs) const
         {
-            return binary_operation_t<var_t<var_id>, rhs_t, op_sum>(*this, rhs);
+            typedef typename forward_expression_t<rhs_t>::type base_t;
+            return binary_operation_t<var_t<var_id>, base_t, op_sum>(*this, forward_expression(rhs));
         }
-        template <variate_expression rhs_t> auto operator- (const rhs_t& rhs)
+        template <typename rhs_t> auto operator- (const rhs_t& rhs) const
         {
-            return binary_operation_t<var_t<var_id>, rhs_t, op_difference>(*this, rhs);
+            typedef typename forward_expression_t<rhs_t>::type base_t;
+            return binary_operation_t<var_t<var_id>, base_t, op_difference>(*this, forward_expression(rhs));
         }
-        template <variate_expression rhs_t> auto operator* (const rhs_t& rhs)
+        template <typename rhs_t> auto operator* (const rhs_t& rhs) const
         {
-            return binary_operation_t<var_t<var_id>, rhs_t, op_product>(*this, rhs);
+            typedef typename forward_expression_t<rhs_t>::type base_t;
+            return binary_operation_t<var_t<var_id>, base_t, op_product>(*this, forward_expression(rhs));
         }
-        template <variate_expression rhs_t> auto operator/ (const rhs_t& rhs)
+        template <typename rhs_t> auto operator/ (const rhs_t& rhs) const
         {
-            return binary_operation_t<var_t<var_id>, rhs_t, op_quotient>(*this, rhs);
+            typedef typename forward_expression_t<rhs_t>::type base_t;
+            return binary_operation_t<var_t<var_id>, base_t, op_quotient>(*this, forward_expression(rhs));
         }
         
         template <const symbol_t var_id_in> 
