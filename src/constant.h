@@ -43,6 +43,31 @@ namespace symd
             return constant_t(data*rhs);
         }
         
+        
+        template <typename rhs_data_t>
+        auto operator + (const constant_t<rhs_data_t>& rhs) const
+        {
+            return constant_t(data+rhs.data);
+        }
+        
+        template <typename rhs_data_t>
+        auto operator - (const constant_t<rhs_data_t>& rhs) const
+        {
+            return constant_t(data-rhs.data);
+        }
+        
+        template <typename rhs_data_t>
+        auto operator / (const constant_t<rhs_data_t>& rhs) const
+        {
+            return constant_t(data/rhs.data);
+        }
+        
+        template <typename rhs_data_t>
+        auto operator * (const constant_t<rhs_data_t>& rhs) const
+        {
+            return constant_t(data*rhs.data);
+        }
+        
         template <const symbol_t var_id> zero_t differentiate() const {return zero_t();}
     };
     
