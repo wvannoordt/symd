@@ -117,8 +117,8 @@ we might compute the three-point stencil for `(d^2/dx^d + (d/dx)^2)` as
     symd::var_t<uc_v> uc;
     symd::var_t<ur_v> ur;
     symd::var_t<x_v>  x;
-    auto deriv    = (ur-ul)*r1;
-    auto deriv2   = (ul-2.0*uc+ur)*r2;
+    auto deriv    = (ur-ul)*(0.5/dx);
+    auto deriv2   = (ul-2.0*uc+ur)*(1.0/dx*dx);
     auto rhs_func = deriv2 + deriv*deriv
 ```
 
