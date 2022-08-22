@@ -98,6 +98,43 @@ int main(int argc, char** argv)
 }
 ```
 
+## Example -- Automatic Differentiation for Boundary Value Problem
+
+This usage example showcases one of the main utilities of SYMD. Boundary value
+problems (BVPs) often arise in scientific computing applications, which solve
+a system of equations given as `D(u) = f`. When the operator `D` is nonlinear,
+this must be done iteratively, requiring the computation of the matrix
+`d(D(u)-f)/du`. Depending on the operator, this can result in a large number of
+implementations that require maintenance.
+
+SYMD provides a way to automatically maintain these implementations. For example,
+we might compute the three-point stencil for `(d^2/dx^d + (d/dx)^2)` as
+
+```c++
+    
+    enum syms {ul_v, uc_v, ur_v, x_v};
+    symd::var_t<ul_v> ul;
+    symd::var_t<uc_v> uc;
+    symd::var_t<ur_v> ur;
+    symd::var_t<x_v>  x;
+    auto deriv    = (ur-ul)*r1;
+    auto deriv2   = (ul-2.0*uc+ur)*r2;
+    auto rhs_func = deriv2 + deriv*deriv
+```
+
+In order to solve a system like `(d^2/dx^d + (d/dx)^2)(u) = f`, we need to evaluate
+the derivatives of `rhs_func` with respect to `ul`, `uc`, and `ur`. With SYMD, we
+need not implement these manually, but can rather just evaluate the derivatives exactly:
+
+```c++
+    rhs[j]    = rhs_func(ul=u[j], uc=u[j+1], ur=u[j+2], x=x_loc);
+    lhs(j,-1) = symd::ddx(rhs_func, ul)(ul=u[j], uc=u[j+1], ur=u[j+2], x=x_loc);
+    lhs(j, 0) = symd::ddx(rhs_func, uc)(ul=u[j], uc=u[j+1], ur=u[j+2], x=x_loc);
+    lhs(j, 1) = symd::ddx(rhs_func, ur)(ul=u[j], uc=u[j+1], ur=u[j+2], x=x_loc);
+```
+
+For the full implementation, the reader is referred to `examples/bvp`.
+
 ## Other Features
 
 Other features not listed above are available in SYMD, including:
