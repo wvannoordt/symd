@@ -12,7 +12,7 @@ typedef double real_t;
 
 int main(int argc, char** argv)
 {
-	const std::size_t n = 100;
+	const std::size_t n = 10000000;
 	example::tridiag_t lhs(n, 0.0);
 	std::vector rhs(n, 0.0);
 	
