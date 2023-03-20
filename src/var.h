@@ -54,7 +54,7 @@ namespace symd
             return unity_t();
         }
         
-        template <valid_assignment_type assigned_t> assignment_t<var_id, assigned_t> operator=(const assigned_t& rhs)
+        template <valid_assignment_type assigned_t> assignment_t<var_id, assigned_t> operator=(const assigned_t& rhs) const
         {
             return assignment_t<var_id,assigned_t>(rhs);
         }

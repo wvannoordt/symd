@@ -38,14 +38,14 @@ namespace symd
     
     template <const symbol_t var_id, typename assignment_t, typename... assignments_t>
     requires (var_id == assignment_t::assigned_var())
-    auto fetch_assignment_value(const assignment_t& assignment, assignments_t... assignments)
+    auto fetch_assignment_value(const assignment_t& assignment, const assignments_t&... assignments)
     {
         return assignment.value;
     }
     
     template <const symbol_t var_id, typename assignment_t, typename... assignments_t>
     requires (var_id != assignment_t::assigned_var())
-    auto fetch_assignment_value(const assignment_t& assignment, assignments_t... assignments)
+    auto fetch_assignment_value(const assignment_t& assignment, const assignments_t&... assignments)
     {
         return fetch_assignment_value<var_id, assignments_t...>(assignments...);
     }
