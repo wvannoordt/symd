@@ -91,14 +91,14 @@ namespace symd
         
         template <const symbol_t var_id> 
         requires (!var_list_contains<variable_t, var_id>::value)
-        zero_t differentiate(void) const
+        zero_t differentiate() const
         {
             return zero_t();
         }
         
         template <const symbol_t var_id> 
         requires (var_list_contains<variable_t, var_id>::value)
-        auto differentiate(void) const
+        auto differentiate() const
         {
             return differentiate_binary_operation<lhs_t, rhs_t, bin_op, var_id>(lhs, rhs);
         }

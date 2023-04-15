@@ -7,3 +7,4 @@
 #include "exp.h"
 #include "trig.h"
 #include "sqrt.h"
+#include "symd_constants.h"
