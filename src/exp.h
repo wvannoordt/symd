@@ -14,14 +14,14 @@ namespace symd
         
         template <const symbol_t var_id> 
         requires (!var_list_contains<typename base_t::variable_t, var_id>::value)
-        zero_t differentiate(void) const
+        zero_t differentiate() const
         {
             return zero_t();
         }
         
         template <const symbol_t var_id> 
         requires (var_list_contains<typename base_t::variable_t, var_id>::value)
-        auto differentiate(void) const
+        auto differentiate() const
         {
             return exp_t<expression_t>(this->expression)*this->expression. template differentiate<var_id>();
         }

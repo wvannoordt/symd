@@ -14,7 +14,7 @@ namespace symd
         
         template <const symbol_t var_id> 
         requires (var_list_contains<typename base_t::variable_t, var_id>::value)
-        auto differentiate(void) const
+        auto differentiate() const
         {
             return (this->expression. template differentiate<var_id>())/(2*sqrt_t<expression_t>(this->expression));
         }

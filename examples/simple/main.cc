@@ -23,6 +23,13 @@ int main(int argc, char** argv)
     
     std::cout << result << std::endl;
     // "2.2"
+
+
+    //=================================
     
+
+    auto func = y*y;
+    ++func;
+
     return 0;
 }
